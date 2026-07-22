@@ -1,0 +1,24 @@
+<%- include('../partials/head', { title: 'Sign up' }) %>
+<%- include('../partials/navbar', { user: user }) %>
+<main class="page">
+  <div class="form-card">
+    <h1>Create an account</h1>
+    <form id="signup-form">
+      <div class="field"><label for="name">Full name</label><input type="text" id="name" name="name" required /></div>
+      <div class="field"><label for="email">Email</label><input type="email" id="email" name="email" required /></div>
+      <div class="field"><label for="phone">Phone</label><input type="text" id="phone" name="phone" /></div>
+      <div class="field"><label for="password">Password</label><input type="password" id="password" name="password" minlength="8" required /></div>
+      <div class="field">
+        <label for="role">I am a</label>
+        <select id="role" name="role">
+          <option value="student">Student looking for a place</option>
+          <option value="owner">Owner listing a PG/flat</option>
+        </select>
+      </div>
+      <div class="form-error" id="signup-error"></div>
+      <button type="submit" class="btn-pill">Sign up</button>
+    </form>
+    <p class="card-meta">Already have an account? <a href="/login">Log in</a></p>
+  </div>
+</main>
+<%- include('../partials/footer', { pageScript: '/js/signup.js' }) %>

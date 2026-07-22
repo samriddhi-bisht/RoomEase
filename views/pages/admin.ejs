@@ -1,0 +1,14 @@
+<%- include('../partials/head', { title: 'Admin' }) %>
+<%- include('../partials/navbar', { user: user }) %>
+<main class="page">
+  <h1>Admin panel</h1>
+  <section>
+    <div class="section-title"><h3>Pending KYC</h3></div>
+    <div id="kyc-pending"><p>Loading…</p></div>
+  </section>
+  <section style="margin-top:2.5rem;">
+    <div class="section-title"><h3>All listings</h3></div>
+    <div id="listings-table"><p>Loading…</p></div>
+  </section>
+</main>
+<%- include('../partials/footer', { pageScript: '/js/admin.js' }) %>

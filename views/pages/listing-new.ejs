@@ -1,0 +1,45 @@
+<%- include('../partials/head', { title: 'List a place' }) %>
+<%- include('../partials/navbar', { user: user }) %>
+<main class="page">
+  <h1>List your PG / flat</h1>
+  <div class="form-card wide">
+    <form id="listing-form" enctype="multipart/form-data">
+      <div class="field"><label for="title">Title</label><input type="text" id="title" name="title" required /></div>
+      <div class="field"><label for="description">Description</label><textarea id="description" name="description" rows="4"></textarea></div>
+      <div class="field-row">
+        <div class="field"><label for="rent">Monthly rent (₹)</label><input type="number" id="rent" name="rent" min="1" required /></div>
+        <div class="field"><label for="deposit">Deposit (₹)</label><input type="number" id="deposit" name="deposit" min="0" /></div>
+      </div>
+      <div class="field"><label for="address">Address</label><input type="text" id="address" name="address" required /></div>
+      <div class="field">
+        <label for="genderPreference">Gender preference</label>
+        <select id="genderPreference" name="genderPreference">
+          <option value="any">Any</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Nearby colleges</label>
+        <div class="checkbox-grid">
+          <% colleges.forEach(function (c) { %>
+            <label><input type="checkbox" name="collegeIds" value="<%= c.id %>" /> <%= c.name %></label>
+          <% }) %>
+        </div>
+      </div>
+      <div class="field">
+        <label>Amenities</label>
+        <div class="checkbox-grid">
+          <% amenities.forEach(function (a) { %>
+            <label><input type="checkbox" name="amenityIds" value="<%= a.id %>" /> <%= a.name %></label>
+          <% }) %>
+        </div>
+      </div>
+      <div class="field"><label for="images">Photos</label><input type="file" id="images" name="images" accept="image/*" multiple required /></div>
+      <div class="form-error" id="listing-error"></div>
+      <div class="form-success" id="listing-success"></div>
+      <button type="submit" class="btn-pill">Publish listing</button>
+    </form>
+  </div>
+</main>
+<%- include('../partials/footer', { pageScript: '/js/listing-new.js' }) %>

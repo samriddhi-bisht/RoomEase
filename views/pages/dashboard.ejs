@@ -1,0 +1,7 @@
+<%- include('../partials/head', { title: 'Dashboard' }) %>
+<%- include('../partials/navbar', { user: user }) %>
+<main class="page" data-role="<%= user.role %>">
+  <div class="section-title"><h1>Dashboard</h1><span id="kyc-badge"></span></div>
+  <div id="dashboard-content"><p>Loading…</p></div>
+</main>
+<%- include('../partials/footer', { pageScript: '/js/dashboard.js' }) %>

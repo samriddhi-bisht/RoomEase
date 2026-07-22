@@ -1,2 +1,7 @@
 node_modules/
 .env
+
+public/uploads/kyc/*
+!public/uploads/kyc/.gitkeep
+public/uploads/listings/*
+!public/uploads/listings/.gitkeep

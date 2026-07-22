@@ -1,0 +1,6 @@
+<%- include('../partials/head', { title: 'Listing' }) %>
+<%- include('../partials/navbar', { user: user }) %>
+<main class="page" id="listing-page" data-listing-id="<%= listingId %>" data-logged-in="<%= user ? '1' : '' %>">
+  <div id="listing-content"><p>Loading…</p></div>
+</main>
+<%- include('../partials/footer', { pageScript: '/js/listing-detail.js' }) %>

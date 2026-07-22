@@ -1,0 +1,31 @@
+<%- include('../partials/head', { title: 'KYC verification' }) %>
+<%- include('../partials/navbar', { user: user }) %>
+<main class="page">
+  <h1>KYC verification</h1>
+  <p>Upload a government or college ID. Automated checks run first — a human admin always makes the final call.</p>
+  <div class="split">
+    <div class="form-card" style="max-width:none;">
+      <form id="kyc-form" enctype="multipart/form-data">
+        <div class="field">
+          <label for="docType">Document type</label>
+          <select id="docType" name="docType" required>
+            <option value="aadhaar">Aadhaar</option>
+            <option value="college_id">College ID</option>
+            <option value="passport">Passport</option>
+            <option value="driving_license">Driving licence</option>
+          </select>
+        </div>
+        <div class="field"><label for="docNumber">Document number (optional)</label><input type="text" id="docNumber" name="docNumber" /></div>
+        <div class="field"><label for="document">Document image / PDF</label><input type="file" id="document" name="document" accept="image/*,application/pdf" required /></div>
+        <div class="form-error" id="kyc-error"></div>
+        <div class="form-success" id="kyc-success"></div>
+        <button type="submit" class="btn-pill">Submit for verification</button>
+      </form>
+    </div>
+    <div>
+      <h3>Your submissions</h3>
+      <div id="kyc-history"><p>Loading…</p></div>
+    </div>
+  </div>
+</main>
+<%- include('../partials/footer', { pageScript: '/js/kyc.js' }) %>

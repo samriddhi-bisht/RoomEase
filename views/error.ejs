@@ -1,0 +1,10 @@
+<%- include('partials/head', { title: 'Error' }) %>
+<%- include('partials/navbar', { user: user }) %>
+<main class="page error-page">
+  <div class="error-card">
+    <h1><%= statusCode %></h1>
+    <p><%= message %></p>
+    <a href="/" class="btn-pill">Go home</a>
+  </div>
+</main>
+<%- include('partials/footer') %>

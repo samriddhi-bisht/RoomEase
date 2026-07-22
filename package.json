@@ -1,0 +1,40 @@
+{
+  "name": "roomease",
+  "version": "1.0.0",
+  "description": "ROOMEASE",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "migrate": "node db/migrate.js",
+    "seed": "node db/seed.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samriddhi-bisht/RoomEase-Find-Your-Space-Find-Your-Roomies..git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/samriddhi-bisht/RoomEase-Find-Your-Space-Find-Your-Roomies./issues"
+  },
+  "homepage": "https://github.com/samriddhi-bisht/RoomEase-Find-Your-Space-Find-Your-Roomies.#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-validator": "^7.3.2",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.2.0",
+    "pg": "^8.22.0",
+    "tesseract.js": "^7.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

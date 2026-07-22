@@ -1,0 +1,32 @@
+<%- include('../partials/head', { title: 'Home' }) %>
+<%- include('../partials/navbar', { user: user }) %>
+<main class="page">
+  <section class="hero">
+    <div>
+      <h1>Find your space.<br/>Find your roomie.</h1>
+      <p class="tagline">
+        Verified PGs and flats near your college, plus roommates from your own campus.
+        Every owner and every student goes through KYC before you ever see them.
+      </p>
+      <a href="/search" class="btn-pill">Browse listings</a>
+      <a href="/signup" class="btn-pill outline" style="margin-left:0.6rem;">Create an account</a>
+    </div>
+    <div class="hero-blob"><span class="blob-emoji">🏠</span></div>
+  </section>
+
+  <section class="stat-row">
+    <div class="stat-tile">
+      <div class="stat-num">✅</div>
+      <div class="stat-label">KYC-verified owners & students</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-num">🎓</div>
+      <div class="stat-label">Search by your college</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-num">🤝</div>
+      <div class="stat-label">Match with compatible roommates</div>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>
