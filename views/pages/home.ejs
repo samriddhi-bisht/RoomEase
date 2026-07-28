@@ -3,29 +3,92 @@
 <main class="page">
   <section class="hero">
     <div>
-      <h1>Find your space.<br/>Find your roomie.</h1>
+      <span class="eyebrow">No broker groups. No forwarded screenshots.</span>
+      <h1>Every PG here<br/>has been <em>checked</em>,<br/>not just posted.</h1>
       <p class="tagline">
-        Verified PGs and flats near your college, plus roommates from your own campus.
-        Every owner and every student goes through KYC before you ever see them.
+        RoomEase verifies the owner, verifies you, and only then opens the chat.
+        Search by college, filter by budget, and message roommates who are actually
+        real people from your campus.
       </p>
-      <a href="/search" class="btn-pill">Browse listings</a>
-      <a href="/signup" class="btn-pill outline" style="margin-left:0.6rem;">Create an account</a>
+      <div class="hero-ctas">
+        <a href="/search" class="btn-pill">Browse listings</a>
+        <a href="/signup" class="btn-pill outline">Create an account</a>
+      </div>
     </div>
-    <div class="hero-blob"><span class="blob-emoji">🏠</span></div>
+
+    <div class="hero-ticket">
+      <div class="stub-row">
+        <span class="stub-label">Listing / 0142</span>
+        <span class="stamp">Verified</span>
+      </div>
+      <h3>2BHK near North Gate</h3>
+      <p class="stub-meta">0.4 km from campus &middot; 3 colleges nearby</p>
+      <hr class="stub-divider" />
+      <div class="fare-row">
+        <span class="fare">&#8377;8,500<span class="fare-note">/mo</span></span>
+        <span class="fare-note">Deposit &#8377;10,000</span>
+      </div>
+    </div>
   </section>
 
-  <section class="stat-row">
-    <div class="stat-tile">
-      <div class="stat-num">✅</div>
-      <div class="stat-label">KYC-verified owners & students</div>
+  <div class="ledger-stats">
+    <div class="ledger-item">
+      <div class="ledger-num">01</div>
+      <div class="ledger-label">KYC-verified owners &amp; students</div>
     </div>
-    <div class="stat-tile">
-      <div class="stat-num">🎓</div>
-      <div class="stat-label">Search by your college</div>
+    <div class="ledger-item">
+      <div class="ledger-num">02</div>
+      <div class="ledger-label">Filtered by your own college</div>
     </div>
-    <div class="stat-tile">
-      <div class="stat-num">🤝</div>
-      <div class="stat-label">Match with compatible roommates</div>
+    <div class="ledger-item">
+      <div class="ledger-num">03</div>
+      <div class="ledger-label">Roommate matching, not guesswork</div>
+    </div>
+  </div>
+
+  <section class="section-head">
+    <span class="eyebrow">How it works</span>
+    <h2>From "where do I even start" to move-in</h2>
+  </section>
+  <section class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h4>Tell us your college</h4>
+      <p>Search narrows to PGs and flats owners have actually tagged as walking distance from your campus — not the whole city.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h4>KYC clears both sides</h4>
+      <p>Owners and students both submit ID before a chat opens. An admin reviews every flag — no anonymous strangers.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h4>Shortlist, message, move in</h4>
+      <p>Compare rent, deposit and amenities side by side, read reviews from students who've actually lived there, then connect.</p>
+    </div>
+  </section>
+
+  <% if (colleges && colleges.length) { %>
+  <section class="section-head">
+    <span class="eyebrow">Search by campus</span>
+    <h2>Popular colleges on RoomEase</h2>
+  </section>
+  <div class="college-chips">
+    <% colleges.forEach(function (c) { %>
+      <a class="college-chip" href="/search?collegeId=<%= c.id %>"><%= c.name %></a>
+    <% }) %>
+    <a class="college-chip" href="/search">All listings</a>
+  </div>
+  <% } %>
+
+  <section class="cta-band">
+    <div>
+      <h2>Renting out a room near campus?</h2>
+      <p>List it in minutes, get matched with verified students, and manage every enquiry from one dashboard.</p>
+    </div>
+    <div class="cta-actions">
+      <a href="/signup" class="btn-pill">List your place</a>
+      <a href="/search" class="btn-pill outline">See live listings</a>
     </div>
   </section>
 </main>

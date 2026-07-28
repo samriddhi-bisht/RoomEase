@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="260" viewBox="0 0 400 260">
+  <defs><pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="rgba(244,241,233,0.18)"/></pattern></defs>
+  <rect width="400" height="260" fill="#191d2b"/>
+  <rect width="400" height="260" fill="url(#dots)"/>
+  <polygon points="0,0 400,0 400,260 0,260" fill="none" stroke="#f4f1e9" stroke-width="3"/>
+  <polygon points="370,0 400,0 400,30" fill="#ff4d33"/>
+  <rect x="30" y="60" width="90" height="110" fill="none" stroke="#f4f1e9" stroke-width="2"/>
+  <circle cx="75" cy="95" r="18" fill="none" stroke="#f4f1e9" stroke-width="2"/>
+  <line x1="45" y1="135" x2="105" y2="135" stroke="#f4f1e9" stroke-width="2"/>
+  <line x1="45" y1="150" x2="105" y2="150" stroke="#f4f1e9" stroke-width="2"/>
+  <text x="150" y="100" font-family="'IBM Plex Mono', monospace" font-weight="700" font-size="18" letter-spacing="1" fill="#f4f1e9">SPECIMEN</text>
+  <text x="150" y="124" font-family="'IBM Plex Mono', monospace" font-size="12" letter-spacing="1" fill="#8b8ea0">DEMO DOCUMENT</text>
+  <text x="150" y="142" font-family="'IBM Plex Mono', monospace" font-size="12" letter-spacing="1" fill="#8b8ea0">NOT A REAL ID</text>
+  <text x="30" y="225" font-family="'IBM Plex Mono', monospace" font-size="12" letter-spacing="2" fill="#8b8ea0">RE / KYC</text>
+</svg>

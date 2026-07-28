@@ -39,5 +39,8 @@ $(function () {
     loadResults();
   });
 
+  const preselectCollegeId = new URLSearchParams(window.location.search).get('collegeId');
+  if (preselectCollegeId) $('#collegeId').val(preselectCollegeId);
+
   loadResults();
 });

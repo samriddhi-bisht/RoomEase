@@ -6,9 +6,10 @@ const asyncHandler = require('../middleware/asyncHandler');
 // (colleges, amenities). Everything else — listings, profiles, KYC status —
 // loads client-side via jQuery AJAX against the JSON API. One data-fetching
 // pattern everywhere, instead of mixing server-rendered data with AJAX data.
-const home = (req, res) => {
-  res.render('pages/home', { user: req.user });
-};
+const home = asyncHandler(async (req, res) => {
+  const colleges = await collegeModel.findAll();
+  res.render('pages/home', { user: req.user, colleges: colleges.slice(0, 8) });
+});
 
 const searchPage = asyncHandler(async (req, res) => {
   const [colleges, amenities] = await Promise.all([collegeModel.findAll(), amenityModel.findAll()]);
