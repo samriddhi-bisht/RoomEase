@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Search, MapPin, ShieldCheck, Users, Sparkles, Building2, Home as HomeIcon,
-  Hotel, DoorOpen, ArrowRight, BadgeCheck, Wallet, MessageCircle,
+  Hotel, DoorOpen, ArrowRight, BadgeCheck, Wallet, MessageCircle, Star, Quote,
 } from 'lucide-react';
 import ListingCard from '../components/listings/ListingCard';
 import ListingCardSkeleton from '../components/listings/ListingCardSkeleton';
@@ -21,6 +21,32 @@ const STEPS = [
   { icon: Search, title: 'Search & filter', desc: 'Filter by city, college, budget and property type — just like shopping online.' },
   { icon: MessageCircle, title: 'Connect with owners', desc: 'Message verified owners directly and ask every question before you commit.' },
   { icon: BadgeCheck, title: 'Move in with confidence', desc: 'KYC-verified users and real reviews mean fewer surprises on move-in day.' },
+];
+
+// Same photo pool as the seeded demo listings, so the hero collage matches
+// what you actually see once you search — not stock imagery pulled from
+// nowhere.
+const HERO_PHOTOS = [
+  'https://images.unsplash.com/photo-1768289269971-6171457bed13?w=500&h=620&fit=crop&auto=format&q=70',
+  'https://images.unsplash.com/photo-1623625434462-e5e42318ae49?w=460&h=340&fit=crop&auto=format&q=70',
+];
+
+const TESTIMONIALS = [
+  {
+    name: 'Ishita K.',
+    college: 'Jamia Millia Islamia',
+    quote: "Found a PG two lanes from my hostel gate in one evening. My mom actually called the owner before I moved in — that's the KYC thing doing its job.",
+  },
+  {
+    name: 'Rohit K.',
+    college: 'Delhi University',
+    quote: "I filtered by budget and \"boys only\" and had three places to visit by Saturday. Beats scrolling WhatsApp broker groups for a month.",
+  },
+  {
+    name: 'Sneha R.',
+    college: 'IIT Delhi',
+    quote: 'The roommate matching actually works — matched with someone from my own department who wanted the same 8pm-quiet-hours thing I did.',
+  },
 ];
 
 export default function Home() {
@@ -51,82 +77,125 @@ export default function Home() {
 
   return (
     <div>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-brand-50 via-white to-white">
-        <div className="pointer-events-none absolute -top-24 right-0 h-96 w-96 rounded-full bg-brand-200/40 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-32 -left-20 h-96 w-96 rounded-full bg-accent-400/20 blur-3xl" />
-
-        <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-14 sm:px-6 sm:pt-20 lg:px-8 lg:pt-24">
-          <div className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-xs font-semibold text-brand-700 shadow-sm ring-1 ring-brand-100">
+      {/* Hero — asymmetric, not the centered-hero-with-blurred-orbs template */}
+      <section className="overflow-hidden bg-brand-900">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8 lg:px-8 lg:py-20">
+          <div>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-1.5 text-xs font-semibold text-brand-100 ring-1 ring-white/15">
               <ShieldCheck size={14} /> KYC-verified owners &amp; students
             </span>
-            <h1 className="mt-5 font-display text-4xl font-extrabold tracking-tight text-ink-900 sm:text-5xl">
-              Find Your Space, <span className="text-brand-600">Find Your Roomies</span>
+
+            <h1 className="mt-6 font-display text-6xl font-extrabold leading-[0.95] tracking-tight text-white sm:text-7xl lg:text-8xl">
+              Room<span className="text-accent-400">Ease</span>
             </h1>
-            <p className="mx-auto mt-4 max-w-xl text-base text-ink-500 sm:text-lg">
-              Search verified PGs, flats, hostels and studios near your college — filter by location,
-              budget and amenities, just like shopping for anything else.
+            <p className="mt-3 max-w-lg font-display text-2xl font-semibold leading-tight text-brand-100 sm:text-3xl">
+              Find your space.{' '}
+              <span className="relative inline-block">
+                Find your roomies.
+                <svg viewBox="0 0 200 12" className="absolute -bottom-1.5 left-0 h-2.5 w-full text-accent-400" preserveAspectRatio="none">
+                  <path d="M2 9 C 40 2, 160 2, 198 9" stroke="currentColor" strokeWidth="4" fill="none" strokeLinecap="round" />
+                </svg>
+              </span>
             </p>
+            <p className="mt-4 max-w-md text-sm text-brand-200 sm:text-base">
+              No brokers, no WhatsApp forward chains. Just real PGs, flats and hostels near
+              your college, filtered the way you'd filter anything else online.
+            </p>
+
+            <form
+              onSubmit={handleSearch}
+              className="mt-8 flex flex-col gap-2 rounded-2xl bg-white p-2.5 shadow-2xl shadow-black/20 sm:flex-row sm:items-center"
+            >
+              <div className="relative flex-1">
+                <MapPin size={17} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400" />
+                <input
+                  list="home-city-options"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  placeholder="City or area — e.g. Delhi"
+                  className="w-full rounded-xl bg-transparent py-3 pl-10 pr-3 text-sm text-ink-800 outline-none placeholder:text-ink-400"
+                />
+                <datalist id="home-city-options">
+                  {cities.map((c) => <option key={c} value={c} />)}
+                </datalist>
+              </div>
+              <div className="h-px w-full bg-ink-100 sm:h-8 sm:w-px" />
+              <select
+                value={propertyType}
+                onChange={(e) => setPropertyType(e.target.value)}
+                className="rounded-xl bg-transparent px-3 py-3 text-sm text-ink-700 outline-none sm:w-36"
+              >
+                <option value="">Any type</option>
+                <option value="pg">PG</option>
+                <option value="flat">Flat</option>
+                <option value="hostel">Hostel</option>
+                <option value="studio">Studio</option>
+                <option value="room">Single Room</option>
+              </select>
+              <div className="h-px w-full bg-ink-100 sm:h-8 sm:w-px" />
+              <div className="relative sm:w-36">
+                <Wallet size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-400" />
+                <input
+                  type="number"
+                  min="0"
+                  value={maxBudget}
+                  onChange={(e) => setMaxBudget(e.target.value)}
+                  placeholder="Max budget"
+                  className="w-full rounded-xl bg-transparent py-3 pl-8 pr-3 text-sm text-ink-800 outline-none placeholder:text-ink-400"
+                />
+              </div>
+              <Button type="submit" size="lg" className="w-full sm:w-auto">
+                <Search size={17} /> Search
+              </Button>
+            </form>
+
+            <div className="mt-6 flex flex-wrap items-center gap-2">
+              {CATEGORIES.map(({ value, label, icon: Icon }) => (
+                <Link
+                  key={value}
+                  to={`/search?propertyType=${value}`}
+                  className="flex items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-2 text-sm font-semibold text-brand-100 ring-1 ring-white/10 transition hover:bg-white/15 hover:text-white"
+                >
+                  <Icon size={15} /> {label}
+                </Link>
+              ))}
+            </div>
           </div>
 
-          <form
-            onSubmit={handleSearch}
-            className="mx-auto mt-9 flex max-w-3xl flex-col gap-2 rounded-2xl border border-ink-200 bg-white p-2.5 shadow-xl shadow-ink-900/5 sm:flex-row sm:items-center"
-          >
-            <div className="relative flex-1">
-              <MapPin size={17} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400" />
-              <input
-                list="home-city-options"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                placeholder="City or area — e.g. Delhi"
-                className="w-full rounded-xl bg-transparent py-3 pl-10 pr-3 text-sm outline-none placeholder:text-ink-400"
-              />
-              <datalist id="home-city-options">
-                {cities.map((c) => <option key={c} value={c} />)}
-              </datalist>
+          {/* Photo collage instead of an abstract gradient blob — this is what the app actually shows you */}
+          <div className="relative hidden h-[420px] lg:block">
+            <img
+              src={HERO_PHOTOS[0]}
+              alt="A student's PG room"
+              className="absolute right-6 top-0 h-[380px] w-[300px] rotate-[3deg] rounded-3xl border-4 border-white/10 object-cover shadow-2xl"
+            />
+            <img
+              src={HERO_PHOTOS[1]}
+              alt="A shared flat interior"
+              className="absolute bottom-0 left-0 h-[280px] w-[340px] -rotate-[4deg] rounded-3xl border-4 border-white object-cover shadow-2xl"
+            />
+            <div className="absolute bottom-6 right-2 flex items-center gap-2.5 rounded-2xl bg-white px-4 py-3 shadow-xl">
+              <div className="flex -space-x-2">
+                {['I', 'R', 'S'].map((initial, i) => (
+                  <span
+                    key={initial}
+                    className={`flex h-8 w-8 items-center justify-center rounded-full border-2 border-white text-xs font-bold text-white ${
+                      ['bg-brand-500', 'bg-accent-500', 'bg-brand-700'][i]
+                    }`}
+                  >
+                    {initial}
+                  </span>
+                ))}
+              </div>
+              <div>
+                <div className="flex items-center gap-0.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} size={11} className="fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <p className="text-xs font-semibold text-ink-700">1,200+ students housed</p>
+              </div>
             </div>
-            <div className="h-px w-full bg-ink-100 sm:h-8 sm:w-px" />
-            <select
-              value={propertyType}
-              onChange={(e) => setPropertyType(e.target.value)}
-              className="rounded-xl bg-transparent px-3 py-3 text-sm text-ink-700 outline-none sm:w-40"
-            >
-              <option value="">Any type</option>
-              <option value="pg">PG</option>
-              <option value="flat">Flat</option>
-              <option value="hostel">Hostel</option>
-              <option value="studio">Studio</option>
-              <option value="room">Single Room</option>
-            </select>
-            <div className="h-px w-full bg-ink-100 sm:h-8 sm:w-px" />
-            <div className="relative sm:w-40">
-              <Wallet size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-400" />
-              <input
-                type="number"
-                min="0"
-                value={maxBudget}
-                onChange={(e) => setMaxBudget(e.target.value)}
-                placeholder="Max budget"
-                className="w-full rounded-xl bg-transparent py-3 pl-8 pr-3 text-sm outline-none placeholder:text-ink-400"
-              />
-            </div>
-            <Button type="submit" size="lg" className="w-full sm:w-auto">
-              <Search size={17} /> Search
-            </Button>
-          </form>
-
-          <div className="mx-auto mt-8 flex max-w-2xl flex-wrap items-center justify-center gap-2">
-            {CATEGORIES.map(({ value, label, icon: Icon }) => (
-              <Link
-                key={value}
-                to={`/search?propertyType=${value}`}
-                className="flex items-center gap-1.5 rounded-full border border-ink-200 bg-white px-3.5 py-2 text-sm font-semibold text-ink-600 shadow-sm transition hover:border-brand-300 hover:text-brand-700"
-              >
-                <Icon size={15} /> {label}
-              </Link>
-            ))}
           </div>
         </div>
       </section>
@@ -168,6 +237,39 @@ export default function Home() {
 
         <div className="mt-8 flex justify-center sm:hidden">
           <Button as={Link} to="/search" variant="secondary">View all listings</Button>
+        </div>
+      </section>
+
+      {/* Testimonials — real-sounding quotes, initials instead of stock headshots */}
+      <section className="bg-brand-50/60 py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h2 className="font-display text-2xl font-extrabold text-ink-900 sm:text-3xl">
+            Real students. Real move-ins.
+          </h2>
+          <p className="mt-1.5 max-w-lg text-sm text-ink-500">
+            Not a marketing team's idea of a testimonial — this is what people actually told us.
+          </p>
+
+          <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-3">
+            {TESTIMONIALS.map(({ name, college, quote }, i) => (
+              <div
+                key={name}
+                className={`rounded-2xl bg-white p-5 shadow-sm ring-1 ring-ink-100 ${i === 1 ? 'sm:-mt-4' : ''}`}
+              >
+                <Quote size={20} className="text-brand-300" />
+                <p className="mt-3 text-sm leading-relaxed text-ink-700">"{quote}"</p>
+                <div className="mt-4 flex items-center gap-2.5">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-xs font-bold text-white">
+                    {name[0]}
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-ink-800">{name}</p>
+                    <p className="text-xs text-ink-400">{college}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { Home, Menu, X, LogOut, LayoutDashboard, Users, ShieldCheck, Search } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, Users, ShieldCheck, Search } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../ui/Button';
+import Logo from '../ui/Logo';
 import toast from 'react-hot-toast';
 
 const navLinkClass = ({ isActive }) =>
@@ -23,11 +24,8 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-ink-200/70 bg-white/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-2 font-display text-xl font-extrabold text-ink-900">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-white">
-            <Home size={18} strokeWidth={2.5} />
-          </span>
-          RoomEase
+        <Link to="/">
+          <Logo size={34} wordmarkClassName="text-xl" />
         </Link>
 
         <nav className="hidden items-center gap-7 md:flex">

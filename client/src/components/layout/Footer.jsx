@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Home, Mail, MapPin } from 'lucide-react';
+import { Mail, MapPin } from 'lucide-react';
+import Logo from '../ui/Logo';
 
 export default function Footer() {
   return (
@@ -7,11 +8,8 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="flex items-center gap-2 font-display text-lg font-extrabold text-ink-900">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-white">
-                <Home size={16} strokeWidth={2.5} />
-              </span>
-              RoomEase
+            <Link to="/">
+              <Logo size={30} wordmarkClassName="text-lg" />
             </Link>
             <p className="mt-3 max-w-xs text-sm text-ink-500">
               Verified PGs, flats and hostels for students — searched, filtered and booked in minutes.
