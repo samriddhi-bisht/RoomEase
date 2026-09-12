@@ -103,15 +103,15 @@ async function upsertUser({ name, email, phone, role }, passwordHash) {
   return rows[0];
 }
 
-async function createListing({ ownerId, title, description, rent, deposit, address, genderPreference, amenityIds, collegeLinks, images, status }) {
+async function createListing({ ownerId, title, description, rent, deposit, address, city, propertyType, furnishing, sharingType, genderPreference, amenityIds, collegeLinks, images, status }) {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
     const { rows } = await client.query(
-      `INSERT INTO listings (owner_id, title, description, rent, deposit, address, gender_preference, status)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+      `INSERT INTO listings (owner_id, title, description, rent, deposit, address, gender_preference, status, city, property_type, furnishing, sharing_type)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
        RETURNING *`,
-      [ownerId, title, description, rent, deposit, address, genderPreference, status || 'active']
+      [ownerId, title, description, rent, deposit, address, genderPreference, status || 'active', city, propertyType || 'pg', furnishing || 'unfurnished', sharingType || 'any']
     );
     const listing = rows[0];
     for (const amenityId of amenityIds) {
@@ -227,91 +227,91 @@ async function seed() {
   listings.push(await createListing({
     ownerId: anita, title: 'Sunny Single Room – Kamla Nagar',
     description: 'Bright single-occupancy room in a family home, 5 minutes from North Campus gate. Home-cooked meals included.',
-    rent: 7500, deposit: 10000, address: 'Kamla Nagar, Delhi', genderPreference: 'any',
+    rent: 7500, deposit: 10000, address: 'Kamla Nagar, Delhi', city: 'Delhi', propertyType: 'room', furnishing: 'unfurnished', sharingType: 'single', genderPreference: 'any',
     amenityIds: [A.WiFi, A.Food, A.Laundry], collegeLinks: [{ collegeId: DU, distanceKm: 0.3 }],
     images: imagesFor(3, 0),
   }));
   listings.push(await createListing({
     ownerId: arjun, title: 'Shared 2BHK Flat – GTB Nagar',
     description: 'Two-bedroom flat shared between 3 students, walking distance from the metro and North Campus.',
-    rent: 6000, deposit: 8000, address: 'GTB Nagar, Delhi', genderPreference: 'male',
+    rent: 6000, deposit: 8000, address: 'GTB Nagar, Delhi', city: 'Delhi', propertyType: 'flat', furnishing: 'semi_furnished', sharingType: 'triple', genderPreference: 'male',
     amenityIds: [A.WiFi, A['Power Backup'], A.Security], collegeLinks: [{ collegeId: DU, distanceKm: 0.6 }],
     images: imagesFor(3, 1),
   }));
   listings.push(await createListing({
     ownerId: fatima, title: 'Girls PG with Home Food – Vijay Nagar',
     description: 'All-girls PG with three home-cooked meals a day, laundry service and a live-in caretaker.',
-    rent: 9000, deposit: 9000, address: 'Vijay Nagar, Delhi', genderPreference: 'female',
+    rent: 9000, deposit: 9000, address: 'Vijay Nagar, Delhi', city: 'Delhi', propertyType: 'pg', furnishing: 'furnished', sharingType: 'double', genderPreference: 'female',
     amenityIds: [A.Food, A.WiFi, A['House Help'], A.Security], collegeLinks: [{ collegeId: DU, distanceKm: 0.5 }],
     images: imagesFor(2, 2),
   }));
   listings.push(await createListing({
     ownerId: arjun, title: 'Studio Apartment – Hauz Khas',
     description: 'Independent studio with AC and a dedicated work desk, ideal for a single research student.',
-    rent: 15000, deposit: 30000, address: 'Hauz Khas, Delhi', genderPreference: 'any',
+    rent: 15000, deposit: 30000, address: 'Hauz Khas, Delhi', city: 'Delhi', propertyType: 'studio', furnishing: 'furnished', sharingType: 'single', genderPreference: 'any',
     amenityIds: [A.WiFi, A.AC, A.Parking, A['Power Backup']], collegeLinks: [{ collegeId: IITD, distanceKm: 0.4 }],
     images: imagesFor(4, 3),
   }));
   listings.push(await createListing({
     ownerId: fatima, title: 'Boys PG – IIT Gate',
     description: 'Twin-sharing rooms right outside the IIT Delhi main gate. Mess food and daily laundry pickup.',
-    rent: 8500, deposit: 8500, address: 'IIT Gate, Delhi', genderPreference: 'male',
+    rent: 8500, deposit: 8500, address: 'IIT Gate, Delhi', city: 'Delhi', propertyType: 'pg', furnishing: 'semi_furnished', sharingType: 'double', genderPreference: 'male',
     amenityIds: [A.Food, A.WiFi, A.Laundry], collegeLinks: [{ collegeId: IITD, distanceKm: 0.2 }],
     images: imagesFor(2, 4),
   }));
   listings.push(await createListing({
     ownerId: anita, title: 'Cozy 1RK – Jamia Nagar',
     description: 'Compact 1-room-kitchen set up for a single student, quiet lane close to Jamia.',
-    rent: 7000, deposit: 7000, address: 'Jamia Nagar, Delhi', genderPreference: 'any',
+    rent: 7000, deposit: 7000, address: 'Jamia Nagar, Delhi', city: 'Delhi', propertyType: 'room', furnishing: 'semi_furnished', sharingType: 'single', genderPreference: 'any',
     amenityIds: [A.WiFi, A.Food], collegeLinks: [{ collegeId: JMI, distanceKm: 0.3 }],
     images: imagesFor(2, 5),
   }));
   listings.push(await createListing({
     ownerId: arjun, title: 'Girls Hostel – Batla House',
     description: 'Supervised girls hostel with CCTV, in-house cook and a 10pm gate — popular with first-years.',
-    rent: 6500, deposit: 5000, address: 'Batla House, Delhi', genderPreference: 'female',
+    rent: 6500, deposit: 5000, address: 'Batla House, Delhi', city: 'Delhi', propertyType: 'hostel', furnishing: 'unfurnished', sharingType: 'triple', genderPreference: 'female',
     amenityIds: [A.Food, A.Security, A['House Help']], collegeLinks: [{ collegeId: JMI, distanceKm: 0.5 }],
     images: imagesFor(3, 6),
   }));
   listings.push(await createListing({
     ownerId: suresh, title: 'Premium PG for Students – Hosur Road',
     description: 'AC rooms with attached washrooms, daily housekeeping and a common study lounge.',
-    rent: 12000, deposit: 12000, address: 'Hosur Road, Bangalore', genderPreference: 'any',
+    rent: 12000, deposit: 12000, address: 'Hosur Road, Bangalore', city: 'Bangalore', propertyType: 'pg', furnishing: 'furnished', sharingType: 'double', genderPreference: 'any',
     amenityIds: [A.WiFi, A.AC, A.Food, A.Security], collegeLinks: [{ collegeId: CHRIST, distanceKm: 0.3 }],
     images: imagesFor(3, 7),
   }));
   listings.push(await createListing({
     ownerId: meena, title: 'Budget Sharing Room – Dairy Circle',
     description: 'No-frills triple-sharing room for students on a tight budget, 10 minute walk to campus.',
-    rent: 6000, deposit: 6000, address: 'Dairy Circle, Bangalore', genderPreference: 'male',
+    rent: 6000, deposit: 6000, address: 'Dairy Circle, Bangalore', city: 'Bangalore', propertyType: 'room', furnishing: 'unfurnished', sharingType: 'triple', genderPreference: 'male',
     amenityIds: [A.WiFi, A.Laundry], collegeLinks: [{ collegeId: CHRIST, distanceKm: 0.8 }],
     images: imagesFor(2, 0),
   }));
   listings.push(await createListing({
     ownerId: suresh, title: 'Fully Furnished Flat – Koramangala',
     description: 'Modern 2BHK flat, fully furnished, ideal for 2-3 students sharing. Covered parking included.',
-    rent: 16000, deposit: 20000, address: 'Koramangala, Bangalore', genderPreference: 'any',
+    rent: 16000, deposit: 20000, address: 'Koramangala, Bangalore', city: 'Bangalore', propertyType: 'flat', furnishing: 'furnished', sharingType: 'triple', genderPreference: 'any',
     amenityIds: [A.WiFi, A.AC, A.Parking, A['Power Backup'], A.Security], collegeLinks: [{ collegeId: CHRIST, distanceKm: 1.2 }],
     images: imagesFor(4, 1),
   }));
   listings.push(await createListing({
     ownerId: vikram, title: 'Girls PG – Viman Nagar',
     description: 'Homely girls PG close to Symbiosis, with a shared kitchen and weekly housekeeping.',
-    rent: 9500, deposit: 9500, address: 'Viman Nagar, Pune', genderPreference: 'female',
+    rent: 9500, deposit: 9500, address: 'Viman Nagar, Pune', city: 'Pune', propertyType: 'pg', furnishing: 'semi_furnished', sharingType: 'double', genderPreference: 'female',
     amenityIds: [A.Food, A.WiFi, A['House Help']], collegeLinks: [{ collegeId: SYM, distanceKm: 0.4 }],
     images: imagesFor(3, 2),
   }));
   listings.push(await createListing({
     ownerId: vikram, title: 'Shared Flat for Boys – Viman Nagar',
     description: 'Simple, affordable shared flat a short auto ride from the Symbiosis campus.',
-    rent: 7000, deposit: 7000, address: 'Viman Nagar, Pune', genderPreference: 'male',
+    rent: 7000, deposit: 7000, address: 'Viman Nagar, Pune', city: 'Pune', propertyType: 'flat', furnishing: 'unfurnished', sharingType: 'triple', genderPreference: 'male',
     amenityIds: [A.WiFi, A['Power Backup']], collegeLinks: [{ collegeId: SYM, distanceKm: 0.6 }],
     images: imagesFor(2, 3),
   }));
   listings.push(await createListing({
     ownerId: meena, title: 'Studio near Symbiosis Campus',
     description: 'Self-contained studio with a small kitchenette, AC and reserved parking for a two-wheeler.',
-    rent: 13000, deposit: 15000, address: 'Viman Nagar, Pune', genderPreference: 'any',
+    rent: 13000, deposit: 15000, address: 'Viman Nagar, Pune', city: 'Pune', propertyType: 'studio', furnishing: 'furnished', sharingType: 'single', genderPreference: 'any',
     amenityIds: [A.WiFi, A.AC, A.Food, A.Parking], collegeLinks: [{ collegeId: SYM, distanceKm: 0.2 }],
     images: imagesFor(3, 4),
   }));
@@ -322,14 +322,14 @@ async function seed() {
     listings.push(await createListing({
       ownerId: ramesh, title: 'Old Listing (Inactive) – Model Town',
       description: 'No longer taking new tenants — kept here for reference.',
-      rent: 5000, deposit: 5000, address: 'Model Town, Delhi', genderPreference: 'any',
+      rent: 5000, deposit: 5000, address: 'Model Town, Delhi', city: 'Delhi', propertyType: 'room', furnishing: 'unfurnished', sharingType: 'single', genderPreference: 'any',
       amenityIds: [A.WiFi], collegeLinks: [{ collegeId: DU, distanceKm: 1.0 }],
       images: imagesFor(1, 5), status: 'inactive',
     }));
     listings.push(await createListing({
       ownerId: anita, title: 'Renovation Pending – Malviya Nagar',
       description: 'Temporarily off the market while the building is renovated.',
-      rent: 8000, deposit: 8000, address: 'Malviya Nagar, Delhi', genderPreference: 'any',
+      rent: 8000, deposit: 8000, address: 'Malviya Nagar, Delhi', city: 'Delhi', propertyType: 'flat', furnishing: 'unfurnished', sharingType: 'double', genderPreference: 'any',
       amenityIds: [A.WiFi], collegeLinks: [{ collegeId: IITD, distanceKm: 1.5 }],
       images: imagesFor(1, 6), status: 'inactive',
     }));

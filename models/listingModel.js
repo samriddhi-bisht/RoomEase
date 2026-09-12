@@ -8,16 +8,20 @@ const pool = require('../config/db');
 async function createWithRelations({
   ownerId, title, description, rent, deposit, address, lat, lng,
   genderPreference, amenityIds, collegeLinks, imagePaths,
+  city, propertyType, furnishing, sharingType,
 }) {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
 
     const { rows } = await client.query(
-      `INSERT INTO listings (owner_id, title, description, rent, deposit, address, lat, lng, gender_preference)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+      `INSERT INTO listings (owner_id, title, description, rent, deposit, address, lat, lng, gender_preference, city, property_type, furnishing, sharing_type)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
        RETURNING *`,
-      [ownerId, title, description, rent, deposit, address, lat || null, lng || null, genderPreference]
+      [
+        ownerId, title, description, rent, deposit, address, lat || null, lng || null, genderPreference,
+        city || null, propertyType || 'pg', furnishing || 'unfurnished', sharingType || 'any',
+      ]
     );
     const listing = rows[0];
 
@@ -90,9 +94,19 @@ async function findByOwner(ownerId) {
   return rows;
 }
 
+const SORT_COLUMNS = {
+  price_asc: 'l.rent ASC',
+  price_desc: 'l.rent DESC',
+  newest: 'l.created_at DESC',
+  rating: 'avg_rating DESC NULLS LAST',
+};
+
 // Builds the WHERE clause conditionally so an unset filter simply isn't
 // added, instead of writing a separate query per filter combination.
-async function search({ collegeId, minBudget, maxBudget, genderPreference, amenityIds }) {
+async function search({
+  collegeId, minBudget, maxBudget, genderPreference, amenityIds,
+  city, propertyType, furnishing, sharingType, q, sort,
+}) {
   const conditions = [`l.status = 'active'`];
   const params = [];
 
@@ -121,18 +135,48 @@ async function search({ collegeId, minBudget, maxBudget, genderPreference, ameni
         WHERE la.listing_id = l.id AND la.amenity_id = ANY($${params.length})) = ${amenityIds.length}`
     );
   }
+  if (city) {
+    params.push(`%${city}%`);
+    conditions.push(`(l.city ILIKE $${params.length} OR l.address ILIKE $${params.length})`);
+  }
+  if (propertyType && propertyType.length > 0) {
+    params.push(propertyType);
+    conditions.push(`l.property_type = ANY($${params.length})`);
+  }
+  if (furnishing) {
+    params.push(furnishing);
+    conditions.push(`l.furnishing = $${params.length}`);
+  }
+  if (sharingType && sharingType !== 'any') {
+    params.push(sharingType);
+    conditions.push(`(l.sharing_type = $${params.length} OR l.sharing_type = 'any')`);
+  }
+  if (q) {
+    params.push(`%${q}%`);
+    conditions.push(`(l.title ILIKE $${params.length} OR l.address ILIKE $${params.length} OR l.city ILIKE $${params.length})`);
+  }
+
+  const orderBy = SORT_COLUMNS[sort] || SORT_COLUMNS.newest;
 
   const sql = `
     SELECT
-      l.id, l.title, l.rent, l.deposit, l.address, l.gender_preference, l.created_at,
+      l.id, l.title, l.rent, l.deposit, l.address, l.city, l.property_type,
+      l.furnishing, l.sharing_type, l.gender_preference, l.created_at,
       (SELECT li.file_path FROM listing_images li WHERE li.listing_id = l.id ORDER BY li.id ASC LIMIT 1) AS cover_image,
       (SELECT round(avg(r.rating)::numeric, 1) FROM reviews r WHERE r.listing_id = l.id) AS avg_rating
     FROM listings l
     WHERE ${conditions.join(' AND ')}
-    ORDER BY l.created_at DESC
+    ORDER BY ${orderBy}
   `;
   const { rows } = await pool.query(sql, params);
   return rows;
+}
+
+async function distinctCities() {
+  const { rows } = await pool.query(
+    `SELECT DISTINCT city FROM listings WHERE city IS NOT NULL AND status = 'active' ORDER BY city ASC`
+  );
+  return rows.map((r) => r.city);
 }
 
 async function setStatus(id, ownerId, status) {
@@ -151,4 +195,4 @@ async function remove(id, ownerId) {
   return rowCount > 0;
 }
 
-module.exports = { createWithRelations, findById, findByOwner, search, setStatus, remove };
+module.exports = { createWithRelations, findById, findByOwner, search, distinctCities, setStatus, remove };

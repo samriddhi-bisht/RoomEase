@@ -32,6 +32,10 @@ async function createListing({ ownerId, body, files }) {
     amenityIds,
     collegeLinks,
     imagePaths,
+    city: body.city,
+    propertyType: body.propertyType || 'pg',
+    furnishing: body.furnishing || 'unfurnished',
+    sharingType: body.sharingType || 'any',
   });
 }
 

@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const errorHandler = require('./middleware/errorHandler');
 const { attachUserIfPresent } = require('./middleware/auth');
@@ -12,6 +13,12 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+// The React app runs on its own dev server (a separate localhost port from
+// this API), so the auth cookie is a cross-origin request — CORS must echo
+// back the exact origin (not '*') and allow credentials for it to be sent.
+const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
+app.use(cors({ origin: CLIENT_ORIGIN, credentials: true }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
