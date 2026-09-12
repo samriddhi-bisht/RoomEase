@@ -39,25 +39,22 @@ const DEMO_STUDENTS = [
 ];
 
 // Real interior photos (Unsplash), spot-checked for actual bedroom/kitchen/
-// living-room content — no people, no off-theme shots. Requested at a fixed
-// crop so every listing card gets a consistent size regardless of the
+// living-room content — no people, no off-theme shots. Deliberately chosen
+// to be modest, lived-in rooms (bunk-bed dorms, simple twin beds, plain
+// bedrooms) rather than polished Western real-estate staging, since this is
+// budget student housing, not a design-magazine spread. Requested at a
+// fixed crop so every listing card gets a consistent size regardless of the
 // source photo's original aspect ratio.
 const UNSPLASH_IDS = [
-  '1522771739844-6a9f6d5f14af', // bedroom, nightstand
-  '1595526114035-0d45ed16cfbf', // clean white bedroom
-  '1502672260266-1c1ef2d93688', // living room with plants
-  '1493809842364-78817add7ffb', // living room, blue sofa
-  '1522708323590-d24dbb6b0267', // kitchen / dining
-  '1484154218962-a197022b5858', // kitchen
-  '1631679706909-1844bbd07221', // minimalist living room
-  '1554995207-c18c203602cb',    // living room, boho plants
-  '1505691938895-1758d7feb511', // living room with art
-  '1585412727339-54e4bae3bbf9', // bright living room
-  '1536376072261-38c75010e6c9', // loft living room, bookshelf
-  '1615873968403-89e068629265', // lounge, green wall
-  '1524758631624-e2822e304c36', // lounge with reading chairs
-  '1560448204-e02f11c3d0e2',    // upscale living room (premium listings)
-  '1598928506311-c55ded91a20c', // bright living room w/ fireplace (premium listings)
+  '1768289269971-6171457bed13', // steel bunk beds, grille windows — hostel dorm
+  '1623625434462-e5e42318ae49', // simple twin beds, plain room
+  '1668258849037-4caa7e2c1347', // modest single bed, mosquito net
+  '1530334580314-1e7a340426a0', // plain single bedroom, wood floor
+  '1709805619372-40de3f158e83', // wooden bunk beds, hostel room
+  '1535186696008-7cba739a3103', // modest lived-in kitchen
+  '1631679706909-1844bbd07221', // simple sitting area
+  '1502672260266-1c1ef2d93688', // small living room
+  '1522708323590-d24dbb6b0267', // dining corner
 ];
 const ROOM_IMAGES = UNSPLASH_IDS.map((id) => `https://images.unsplash.com/photo-${id}?w=900&h=600&fit=crop&auto=format&q=70`);
 function imagesFor(count, offset) {
