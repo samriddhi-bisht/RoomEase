@@ -225,7 +225,7 @@ export default function Home() {
             </div>
           </div>
           <Button as={Link} to="/roommates" variant="secondary" size="lg" className="shrink-0">
-            Find roommates
+            Find Your Roomies
           </Button>
         </div>
       </section>

@@ -22,7 +22,7 @@ export default function Footer() {
             <h4 className="font-display text-sm font-semibold text-ink-800">Explore</h4>
             <ul className="mt-3 space-y-2 text-sm text-ink-500">
               <li><Link to="/search" className="hover:text-brand-700">Browse listings</Link></li>
-              <li><Link to="/roommates" className="hover:text-brand-700">Find roommates</Link></li>
+              <li><Link to="/roommates" className="hover:text-brand-700">Find Your Roomies</Link></li>
               <li><Link to="/search?propertyType=pg" className="hover:text-brand-700">PGs near college</Link></li>
               <li><Link to="/search?propertyType=flat" className="hover:text-brand-700">Flats to share</Link></li>
             </ul>

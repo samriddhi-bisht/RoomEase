@@ -32,7 +32,7 @@ export default function Navbar() {
 
         <nav className="hidden items-center gap-7 md:flex">
           <NavLink to="/search" className={navLinkClass}>Browse Rooms</NavLink>
-          <NavLink to="/roommates" className={navLinkClass}>Find Roommates</NavLink>
+          <NavLink to="/roommates" className={navLinkClass}>Find Your Roomies</NavLink>
           {user?.role === 'owner' && <NavLink to="/dashboard/listings/new" className={navLinkClass}>List a Property</NavLink>}
           {user?.role === 'admin' && <NavLink to="/admin" className={navLinkClass}>Admin</NavLink>}
         </nav>
@@ -78,7 +78,7 @@ export default function Navbar() {
               <Search size={16} /> Browse Rooms
             </Link>
             <Link onClick={() => setOpen(false)} to="/roommates" className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold text-ink-700 hover:bg-ink-50">
-              <Users size={16} /> Find Roommates
+              <Users size={16} /> Find Your Roomies
             </Link>
             {user?.role === 'admin' && (
               <Link onClick={() => setOpen(false)} to="/admin" className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold text-ink-700 hover:bg-ink-50">

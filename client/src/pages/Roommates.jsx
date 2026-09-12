@@ -162,7 +162,7 @@ export default function Roommates() {
     return (
       <div className="mx-auto max-w-lg px-4 py-24 text-center">
         <Users size={36} className="mx-auto text-ink-300" />
-        <h1 className="mt-3 font-display text-xl font-bold text-ink-900">Log in to find roommates</h1>
+        <h1 className="mt-3 font-display text-xl font-bold text-ink-900">Log in to find your roomies</h1>
         <Button as={Link} to="/login" className="mt-5">Log in</Button>
       </div>
     );
@@ -190,7 +190,7 @@ export default function Roommates() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
-      <h1 className="font-display text-2xl font-extrabold text-ink-900">Find Roommates</h1>
+      <h1 className="font-display text-2xl font-extrabold text-ink-900">Find Your Roomies</h1>
       <p className="mt-1 text-sm text-ink-500">Match with students near your college who share your budget.</p>
 
       <div className="mt-5 flex gap-1 rounded-lg bg-ink-100 p-1 w-fit">
